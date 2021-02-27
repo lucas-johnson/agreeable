@@ -1,22 +1,22 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# agRee
+# accuragree
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of agRee is to provide a set of simple tools to assess
+The goal of accuragree is to provide a set of simple tools to assess
 agreement between two datasets.
 
 ## Installation
 
-<!-- You can install the released version of agRee from [CRAN](https://CRAN.R-project.org) with: -->
+<!-- You can install the released version of accuragree from [CRAN](https://CRAN.R-project.org) with: -->
 
-There is no released version of agRee yet.
+There is no released version of accuragree yet.
 
 <!-- ``` r -->
-<!-- install.packages("agRee") -->
+<!-- install.packages("accuragree") -->
 <!-- ``` -->
 
 You can install the development version from
@@ -24,7 +24,7 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("lucas-johnson/agRee")
+devtools::install_github("lucas-johnson/accuragree")
 ```
 
 ## Example
@@ -34,6 +34,6 @@ coefficient), ACs (systematic agreement) and ACu (unsystematic
 agreement):
 
 ``` r
-library(agRee)
+library(accuragree)
 # TODO: fill in example code here. 
 ```
