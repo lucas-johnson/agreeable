@@ -9,8 +9,8 @@
 The goal of accuragree is to provide a set of simple tools to assess
 agreement between two datasets.
 
-Computations following
-[https://www.ingentaconnect.com/content/asprs/pers/2006/00000072/00000007/art00006](Ji%20and%20Gallo%202006)
+Computations following [Ji and Gallo
+2006](https://www.ingentaconnect.com/content/asprs/pers/2006/00000072/00000007/art00006)
 
 ## Installation
 
