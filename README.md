@@ -2,6 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
+“[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)”
 [![R build
 status](https://github.com/lucas-johnson/acurragree/workflows/R-CMD-check/badge.svg)](https://github.com/lucas-johnson/acurragree/actions)
 [![Codecov test
