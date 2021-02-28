@@ -15,7 +15,7 @@ ac(x, y, na.rm = F)
 computation}
 }
 \value{
-a numeric value bounded \link{0, 1}
+a numeric value bounded [0, 1]
 }
 \description{
 Compute agreement coefficient (AC) following Ji and Gallo 2006

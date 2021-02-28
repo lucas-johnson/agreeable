@@ -12,8 +12,7 @@
 #'
 #' @examples
 b_gmfr <- function(x, y, na.rm = F) {
-    
-    
+    assertthat::assert_that(length(x) == length(y))
     if (na.rm) {
         xy <- vec_narm(x, y)
         x <- xy$x
@@ -37,7 +36,12 @@ b_gmfr <- function(x, y, na.rm = F) {
 #'
 #' @examples
 a_gmfr <- function(x, y, na.rm = F) {
-    
+    assertthat::assert_that(length(x) == length(y))
+    if (na.rm) {
+        xy <- vec_narm(x, y)
+        x <- xy$x
+        y <- xy$y
+    }
     ybar <- mean(y, na.rm = na.rm)
     xbar <- mean(x, na.rm = na.rm)
     a <- ybar - b_gmfr(x, y, na.rm = na.rm) * xbar
@@ -55,7 +59,11 @@ a_gmfr <- function(x, y, na.rm = F) {
 #'
 #' @examples
 gmfr <- function(x, y, na.rm = F) {
-    
+    if (na.rm) {
+        xy <- vec_narm(x, y)
+        x <- xy$x
+        y <- xy$y
+    }
     a <- a_gmfr(x, y, na.rm = na.rm)
     b <- b_gmfr(x, y, na.rm = na.rm)
     y_gmfr <- a + b * x

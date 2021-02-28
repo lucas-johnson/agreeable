@@ -6,12 +6,34 @@
 #' @param y a vector of numeric values
 #' @param na.rm boolean flag indicating whether or not to remove NA values from
 #'   computation
+#'   
 #' @return numeric value
 #'
 #' @examples
 ssd <- function(x, y, na.rm = F) {
     assertthat::assert_that(length(x) == length(y))
     return(sum((x - y) ^ 2, na.rm = na.rm ))
+}
+
+#' msd
+#' 
+#' Mean squared difference
+#'
+#' @inheritParams ssd
+#'
+#' @return numeric value
+#'
+#' @examples
+msd <- function(x, y, na.rm = F) {
+    
+    assertthat::assert_that(length(x) == length(y))
+    if (na.rm) {
+        xy <- vec_narm(x, y)
+        x <- xy$x
+        y <- xy$y
+    }
+    n <- length(x)
+    ssd(x, y, na.rm = na.rm) / n
 }
 
 #' spod
@@ -61,6 +83,42 @@ spdu <- function(x, y, na.rm = F) {
     )
 }
 
+
+#' mpdu
+#' 
+#' Unsystematic mean product-difference.
+#'
+#' @inheritParams spdu
+#'
+#' @return numeric value
+#'
+#' @examples
+mpdu <- function(x, y, na.rm = F) {
+    
+    assertthat::assert_that(length(x) == length(y))
+    if (na.rm) {
+        xy <- vec_narm(x, y)
+        x <- xy$x
+        y <- xy$y
+    }
+    n <- length(x)
+    spdu(x, y, na.rm = na.rm) / n
+}
+
+#' pud
+#' 
+#' Percentage of unsystematic difference
+#'
+#' @inheritParams mpdu
+#'
+#' @return numeric value bounded \[0, 1\]
+#' @export
+#'
+#' @examples
+pud <- function(x, y, na.rm = F) {
+    mpdu(x, y, na.rm = na.rm) / msd(x, y, na.rm = na.rm)
+}
+
 #' spds
 #' 
 #' Systematic sum of product-difference
@@ -76,6 +134,43 @@ spds <- function(x, y, na.rm = F) {
     ssd(x, y, na.rm = na.rm) - spdu(x, y, na.rm = na.rm)
 }
 
+#' mpds
+#'
+#' Systematic mean product-difference
+#' 
+#' @inheritParams spds
+#'
+#' @return numeric value
+#'
+#' @examples
+mpds <- function(x, y, na.rm = F) {
+    
+    assertthat::assert_that(length(x) == length(y))
+    if (na.rm) {
+        xy <- vec_narm(x, y)
+        x <- xy$x
+        y <- xy$y
+    }
+    n <- length(x)
+    spds(x, y, na.rm = na.rm) / n
+}
+
+#' psd
+#' 
+#' Percentage of systematic difference
+#'
+#' @inheritParams mpds
+#'
+#' @return numeric value bounded \[0, 1\]
+#' 
+#' @export
+#'
+#' @examples
+psd <- function(x, y, na.rm = F) {
+    
+    mpds(x, y, na.rm = na.rm) / msd(x, y, na.rm = na.rm)
+}
+
 #' ac
 #' 
 #' Compute agreement coefficient (AC) following Ji and Gallo 2006
@@ -85,7 +180,7 @@ spds <- function(x, y, na.rm = F) {
 #' 
 #' @inheritParams spds
 #' 
-#' @return a numeric value bounded [0, 1]
+#' @return a numeric value bounded \[0, 1\]
 #' @export
 #'
 #' @examples
@@ -103,7 +198,7 @@ ac <- function(x, y, na.rm = F) {
 #'
 #' @inheritParams ac
 #'
-#' @return a numeric value bounded [0, 1]
+#' @return a numeric value bounded \[0, 1\]
 #' @export
 #'
 #' @examples
@@ -121,7 +216,7 @@ acs <- function(x, y, na.rm = F) {
 #'
 #' @inheritParams ac
 #' 
-#' @return a numeric value bounded [0, 1]
+#' @return a numeric value bounded \[0, 1\]
 #' @export
 #'
 #' @examples
