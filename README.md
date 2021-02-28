@@ -1,10 +1,21 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: start -->
+
+[![CRAN
+status](https://www.r-pkg.org/badges/version/accuragree)](https://CRAN.R-project.org/package=accuragree)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build
+status](https://travis-ci.com/lucas-johnson/acurragree.svg?branch=master)](https://travis-ci.com/lucas-johnson/acurragree)
+[![R build
+status](https://github.com/lucas-johnson/acurragree/workflows/R-CMD-check/badge.svg)](https://github.com/lucas-johnson/acurragree/actions)
+<!-- badges: end -->
 
 # accuragree
 
 The goal of accuragree is to provide a set of simple tools to assess
-agreement between two matching datasets.The specific use case under
+agreement between two matching datasets. The specific use case under
 which this package was developed is to assess the agreement between
 modeled and observed datasets.
 
