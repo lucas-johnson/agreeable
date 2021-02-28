@@ -3,9 +3,6 @@
 
 # accuragree
 
-<!-- badges: start -->
-<!-- badges: end -->
-
 The goal of accuragree is to provide a set of simple tools to assess
 agreement between two matching datasets.The specific use case under
 which this package was developed is to assess the agreement between
