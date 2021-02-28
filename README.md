@@ -9,6 +9,8 @@
 The goal of accuragree is to provide a set of simple tools to assess
 agreement between two datasets.
 
+Computations following
+
 ## Installation
 
 <!-- You can install the released version of accuragree from [CRAN](https://CRAN.R-project.org) with: -->
