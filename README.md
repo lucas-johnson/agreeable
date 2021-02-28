@@ -32,21 +32,20 @@ You can install the development version from
 devtools::install_github("lucas-johnson/accuragree")
 ```
 
-## Example
+## Examples
 
 Here are some of the basic tools made available by acurragree…
 
-1.  Compute AC (agreement coefficient), ACs (systematic agreement), ACu
-    (unsystematic agreement), PUD (percentage of unsystematic
-    difference), and PSD (percentage of systematic difference):
+### 1. Compute AC (agreement coefficient), ACs (systematic agreement), ACu
+
+(unsystematic agreement), PUD (percentage of unsystematic difference),
+and PSD (percentage of systematic difference):
 
 ``` r
 library(accuragree)
 library(data.table)
-#> Warning: package 'data.table' was built under R version 4.0.2
 library(ggplot2)
 library(knitr)
-#> Warning: package 'knitr' was built under R version 4.0.2
 
 kable(head(example_data, 10))
 ```
@@ -80,11 +79,15 @@ knitr::kable(
 |----------:|---------:|----------:|----------:|----------:|
 | 0.6428046 | 0.968102 | 0.6747026 | 0.9106988 | 0.0893012 |
 
-1.  Scatter plot with 1:1 and Geometric Mean Functional Relationship
-    (GMFR) lines:
+### 2. Scatter plot with 1:1 and Geometric Mean Functional Relationship (GMFR)
+
+lines:
 
 ``` r
+# Intercept
 a <- a_gmfr(example_data$observed, example_data$predicted)
+
+# Slope
 b <- b_gmfr(example_data$observed, example_data$predicted)
 
 ggplot2::ggplot(data = example_data) + 
