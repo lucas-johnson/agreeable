@@ -43,9 +43,11 @@ devtools::install_github("lucas-johnson/accuragree")
 ## Examples
 Here are some of the basic tools made available by acurragree... 
 
-### 1. Compute AC (agreement coefficient), ACs (systematic agreement), ACu 
-   (unsystematic agreement), PUD (percentage of unsystematic difference), and 
-   PSD (percentage of systematic difference):
+
+### 1. AC 
+Compute AC (agreement coefficient), ACs (systematic agreement), ACu 
+(unsystematic agreement), PUD (percentage of unsystematic difference), and PSD 
+(percentage of systematic difference):
 
 ```{r example_1, results = 'asis', warning=F}
 library(accuragree)
@@ -67,8 +69,8 @@ knitr::kable(
 ```
 
 
-### 2. Scatter plot with 1:1 and Geometric Mean Functional Relationship (GMFR) 
-   lines:
+### 2. GMFR 
+Scatter plot with 1:1 and Geometric Mean Functional Relationship (GMFR) lines:
 
 ```{r example_2, results = 'asis', warning = F}
 
