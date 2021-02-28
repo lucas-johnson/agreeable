@@ -2,13 +2,13 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![R build
+status](https://github.com/lucas-johnson/acurragree/workflows/R-CMD-check/badge.svg)](https://github.com/lucas-johnson/acurragree/actions)
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
-[![R build
-status](https://github.com/lucas-johnson/acurragree/workflows/R-CMD-check/badge.svg)](https://github.com/lucas-johnson/acurragree/actions)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/accuragree)](https://CRAN.R-project.org/package=accuragree)
 <!-- badges: end -->
