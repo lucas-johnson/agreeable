@@ -9,8 +9,8 @@ Authors@R:
            comment = c(ORCID = "0000-0002-7953-0260"))
 Description: This package provides a host of simple tools to assess the 
     agreement of datasets.
-URL: https://github.com/lucas-johnson/acurragree
-BugReports: https://github.com/lucas-johnson/acurragree/issues
+URL: https://github.com/lucas-johnson/accuragree
+BugReports: https://github.com/lucas-johnson/accuragree/issues
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
