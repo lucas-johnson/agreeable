@@ -18,8 +18,7 @@ computation}
 a numeric value bounded \link{0, 1}
 }
 \description{
-Compute systematic agreement coefficient (ACs) following
-\href{https://www.ingentaconnect.com/content/asprs/pers/2006/00000072/00000007/art00006}{Ji and Gallo 2006}
+Compute systematic agreement coefficient (ACs) following Ji and Gallo 2006
 }
 \details{
 ACs is bounded between 0 and 1 where 1 represents perfect agreement and 0

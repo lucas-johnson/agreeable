@@ -78,8 +78,7 @@ spds <- function(x, y, na.rm = F) {
 
 #' ac
 #' 
-#' Compute agreement coefficient (AC) following 
-#'   \href{https://www.ingentaconnect.com/content/asprs/pers/2006/00000072/00000007/art00006}{Ji and Gallo 2006}
+#' Compute agreement coefficient (AC) following Ji and Gallo 2006
 #' 
 #' AC is bounded between 0 and 1 where 1 represents perfect agreement and 0
 #' represents no agreement.
@@ -97,8 +96,7 @@ ac <- function(x, y, na.rm = F) {
 
 #' acs
 #' 
-#' Compute systematic agreement coefficient (ACs) following 
-#'   \href{https://www.ingentaconnect.com/content/asprs/pers/2006/00000072/00000007/art00006}{Ji and Gallo 2006}
+#' Compute systematic agreement coefficient (ACs) following Ji and Gallo 2006
 #' 
 #' ACs is bounded between 0 and 1 where 1 represents perfect agreement and 0
 #' represents no agreement.
@@ -116,8 +114,7 @@ acs <- function(x, y, na.rm = F) {
 
 #' acu
 #' 
-#' Compute unsystematic agreement coefficient (ACu) following 
-#'   \href{https://www.ingentaconnect.com/content/asprs/pers/2006/00000072/00000007/art00006}{Ji and Gallo 2006}
+#' Compute unsystematic agreement coefficient (ACu) following Ji and Gallo 2006
 #' 
 #' ACu is bounded between 0 and 1 where 1 represents perfect agreement and 0
 #' represents no agreement.
