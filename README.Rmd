@@ -35,6 +35,7 @@ Computations following [Ji and Gallo 2006](https://www.ingentaconnect.com/conten
 ## Examples
 Here are some of the basic tools made available by agreeable... 
 
+### Simulated data generation:
 ```{r datagen, results = 'asis', warning=F}
 library(agreeable)
 library(ggplot2)

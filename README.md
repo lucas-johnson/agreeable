@@ -31,6 +31,8 @@ Computations following [Ji and Gallo
 
 Here are some of the basic tools made available by agreeable…
 
+### Simulated data generation:
+
 ``` r
 library(agreeable)
 library(ggplot2)
