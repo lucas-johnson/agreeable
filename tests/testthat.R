@@ -1,4 +1,4 @@
 library(testthat)
-library(accuragree)
+library(agreeable)
 
-test_check("accuragree")
+test_check("agreeable")

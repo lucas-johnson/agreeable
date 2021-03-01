@@ -4,22 +4,22 @@
 
 [![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Codecov test
-coverage](https://codecov.io/gh/lucas-johnson/accuragree/branch/main/graph/badge.svg)](https://codecov.io/gh/lucas-johnson/accuragree?branch=main)
+coverage](https://codecov.io/gh/lucas-johnson/agreeable/branch/main/graph/badge.svg)](https://codecov.io/gh/lucas-johnson/agreeable?branch=main)
 [![R build
-status](https://github.com/lucas-johnson/accuragree/workflows/R-CMD-check/badge.svg)](https://github.com/lucas-johnson/accuragree/actions)
+status](https://github.com/lucas-johnson/agreeable/workflows/R-CMD-check/badge.svg)](https://github.com/lucas-johnson/agreeable/actions)
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CRAN
-status](https://www.r-pkg.org/badges/version/accuragree)](https://CRAN.R-project.org/package=accuragree)
+status](https://www.r-pkg.org/badges/version/agreeable)](https://CRAN.R-project.org/package=agreeable)
 
 <!-- badges: end -->
 
-# accuragree
+# agreeable
 
-The goal of accuragree is to provide a set of simple tools to assess
+The goal of agreeable is to provide a set of simple tools to assess
 agreement between two matching datasets. The specific use case under
 which this package was developed is to assess the agreement between
 modeled and observed datasets.
@@ -29,7 +29,7 @@ Computations following [Ji and Gallo
 
 ## Examples
 
-Here are some of the basic tools made available by accuragree…
+Here are some of the basic tools made available by agreeable…
 
 ### 1. AC
 
@@ -38,7 +38,7 @@ Compute AC (agreement coefficient), ACs (systematic agreement), ACu
 and PSD (percentage of systematic difference):
 
 ``` r
-library(accuragree)
+library(agreeable)
 library(data.table)
 library(ggplot2)
 library(knitr)
@@ -98,12 +98,12 @@ ggplot2::ggplot(data = example_data) +
 
 ## Installation
 
-<!-- You can install the released version of accuragree from [CRAN](https://CRAN.R-project.org) with: -->
+<!-- You can install the released version of agreeable from [CRAN](https://CRAN.R-project.org) with: -->
 
-There is no released version of accuragree yet.
+There is no released version of agreeable yet.
 
 <!-- ``` r -->
-<!-- install.packages("accuragree") -->
+<!-- install.packages("agreeable") -->
 <!-- ``` -->
 
 You can install the development version from
@@ -111,5 +111,5 @@ You can install the development version from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("lucas-johnson/accuragree")
+devtools::install_github("lucas-johnson/agreeable")
 ```
