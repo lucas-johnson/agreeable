@@ -31,70 +31,116 @@ Computations following [Ji and Gallo
 
 Here are some of the basic tools made available by agreeable…
 
+``` r
+library(agreeable)
+library(ggplot2)
+library(knitr)
+
+set.seed(123)
+observed <- sort(rnorm(500, mean = 300, sd = 75))
+predicted_systematic <- sort(rnorm(500, mean = 275, sd = 100))
+
+sds <- c(1, 5, 10, 30, 50, 75, 100, 150)
+predicted_unsystematic <- sort(rnorm(500, mean = 300, sd = sds))
+```
+
 ### 1. AC
 
 Compute AC (agreement coefficient), ACs (systematic agreement), ACu
 (unsystematic agreement), PUD (percentage of unsystematic difference),
 and PSD (percentage of systematic difference):
 
-``` r
-library(agreeable)
-library(data.table)
-library(ggplot2)
-library(knitr)
-
-kable(head(example_data, 10))
-```
-
-|  observed | predicted |
-|----------:|----------:|
-| 140.61384 | 162.19677 |
-| 103.46413 | 142.71354 |
-|  89.73531 |  85.00245 |
-| 104.44828 | 140.66393 |
-| 144.88737 | 190.74080 |
-| 122.30545 | 132.33885 |
-|  14.33030 |  39.01110 |
-| 213.71319 | 172.17009 |
-|  91.62893 | 141.74096 |
-|  82.64259 | 147.13899 |
+Systematic differences dominate:
 
 ``` r
 knitr::kable(
     data.table::data.table(
-        AC = ac(example_data$observed, example_data$predicted),
-        ACs = acs(example_data$observed, example_data$predicted),
-        ACu = acu(example_data$observed, example_data$predicted),
-        PUD = pud(example_data$observed, example_data$predicted),
-        PSD = psd(example_data$observed, example_data$predicted)
+        AC = ac(observed, predicted_systematic),
+        ACs = acs(observed, predicted_systematic),
+        ACu = acu(observed, predicted_systematic),
+        PUD = pud(observed, predicted_systematic),
+        PSD = psd(observed, predicted_systematic)
     )
 )
 ```
 
-|        AC |      ACs |       ACu |       PUD |       PSD |
-|----------:|---------:|----------:|----------:|----------:|
-| 0.6428046 | 0.968102 | 0.6747026 | 0.9106988 | 0.0893012 |
+|        AC |       ACs |       ACu |       PUD |       PSD |
+|----------:|----------:|----------:|----------:|----------:|
+| 0.8659736 | 0.8691102 | 0.9968634 | 0.0234028 | 0.9765972 |
+
+Unsystematic (random) differences dominate:
+
+``` r
+knitr::kable(
+    data.table::data.table(
+        AC = ac(observed, predicted_unsystematic),
+        ACs = acs(observed, predicted_unsystematic),
+        ACu = acu(observed, predicted_unsystematic),
+        PUD = pud(observed, predicted_unsystematic),
+        PSD = psd(observed, predicted_unsystematic)
+    )
+)
+```
+
+|        AC |       ACs |      ACu |       PUD |       PSD |
+|----------:|----------:|---------:|----------:|----------:|
+| 0.8553422 | 0.9967902 | 0.858552 | 0.9778108 | 0.0221892 |
 
 ### 2. GMFR
 
 Scatter plot with 1:1 and Geometric Mean Functional Relationship (GMFR)
 lines:
 
+Systematic differences dominate:
+
 ``` r
 # Intercept
-a <- a_gmfr(example_data$observed, example_data$predicted)
+a <- a_gmfr(observed, predicted_systematic)
 
 # Slope
-b <- b_gmfr(example_data$observed, example_data$predicted)
+b <- b_gmfr(observed, predicted_systematic)
 
-ggplot2::ggplot(data = example_data) + 
-    ggplot2::geom_point(aes(x = observed, y = predicted), alpha = 0.7, color = "black") + 
+ggplot2::ggplot(data = NULL) + 
+    ggplot2::geom_point(
+        aes(x = observed, y = predicted_systematic), 
+        alpha = 0.7, 
+        color = "black"
+    ) + 
     ggplot2::geom_abline(aes(slope = 1, intercept = 0, color = "black")) + 
     ggplot2::geom_abline(aes(slope = b, intercept = a, color = "orange")) + 
-    ggplot2::scale_color_identity(labels=c("1:1", "GMFR"), guide="legend", name = "")
+    ggplot2::scale_color_identity(
+        labels=c("1:1", "GMFR"), 
+        guide="legend", 
+        name = ""
+    )
 ```
 
-<img src="man/figures/README-example_2-1.png" width="100%" />
+<img src="man/figures/README-example_2_systematic-1.png" width="100%" />
+
+Unsystematic (random) differences dominate:
+
+``` r
+a <- a_gmfr(observed, predicted_unsystematic)
+
+# Slope
+b <- b_gmfr(observed, predicted_unsystematic)
+
+ggplot2::ggplot(data = NULL) + 
+    ggplot2::geom_point(
+        aes(x = observed, y = predicted_unsystematic), 
+        alpha = 0.7, 
+        color = "black"
+    ) + 
+    ggplot2::geom_abline(aes(slope = 1, intercept = 0, color = "black")) + 
+    ggplot2::geom_abline(aes(slope = b, intercept = a, color = "orange")) + 
+    ggplot2::scale_color_identity(
+        labels=c("1:1", "GMFR"), 
+        guide="legend", 
+        name = ""
+    )
+```
+
+<img src="man/figures/README-example_2_unsystematic-1.png" width="100%" />
 
 ## Installation
 
