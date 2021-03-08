@@ -20,6 +20,9 @@ Suggests:
     testthat,
     covr
 Imports: 
-    assertthat
+    assertthat,
+    stats,
+    dplyr,
+    tidyr
 Depends: 
     R (>= 2.10)
