@@ -73,7 +73,7 @@ new_gmfr <- function(data, x, y, na.rm) {
     gmfr_obj <- list(
         intercept = intercept,
         slope = slope,
-        data = select(data, c(x = gmfr_x, y = gmfr_y))
+        data = dplyr::select(data, c(x = gmfr_x, y = gmfr_y))
     )
     class(gmfr_obj) <- "agreeable_gmfr"
     return(gmfr_obj)

@@ -10,9 +10,13 @@
 #' @return numeric value
 #'
 #' @examples
-ssd <- function(x, y, na.rm = F) {
-    assertthat::assert_that(length(x) == length(y))
-    return(sum((x - y) ^ 2, na.rm = na.rm ))
+ssd <- function(data, x, y, na.rm = F) {
+    if (na.rm) {
+        data <- data %>% tidyr::drop_na()
+    }
+    ssd <- data %>% dplyr::mutate(diff_sq = (x - y) ^ 2) %>%
+        dplyr::summarise(sum(diff_sq))
+    return(ssd[[1]])
 }
 
 #' msd
@@ -24,16 +28,12 @@ ssd <- function(x, y, na.rm = F) {
 #' @return numeric value
 #'
 #' @examples
-msd <- function(x, y, na.rm = F) {
-    
-    assertthat::assert_that(length(x) == length(y))
+msd <- function(data, x, y, na.rm = F) {
     if (na.rm) {
-        xy <- vec_narm(x, y)
-        x <- xy$x
-        y <- xy$y
+        data <- data %>% tidyr::drop_na()
     }
-    n <- length(x)
-    ssd(x, y, na.rm = na.rm) / n
+    n <- nrow(data)
+    data %>% ssd(x, y, na.rm = na.rm) / n
 }
 
 #' spod
@@ -45,21 +45,18 @@ msd <- function(x, y, na.rm = F) {
 #' @return numeric value
 #'
 #' @examples
-spod <- function(x, y, na.rm = F) {
+spod <- function(data, x, y, na.rm = F) {
     
-    assertthat::assert_that(length(x) == length(y))
     if (na.rm) {
-        xy <- vec_narm(x, y)
-        x <- xy$x
-        y <- xy$y
+        data <- data %>% tidyr::drop_na()
     }
-    xbar <- mean(x)
-    ybar <- mean(y)
-    diff_xbar <- abs(x - xbar)
-    diff_ybar <- abs(y - ybar)
-    sum(
-        (abs(xbar - ybar) + diff_xbar) * (abs(xbar - ybar) + diff_ybar)
-    )
+    spod <- data %>% 
+        dplyr::mutate(xbar = mean(x), ybar = mean(y)) %>%
+        dplyr::mutate(diff_xbar = abs(x - xbar), diff_ybar = abs(y - ybar)) %>%
+        dplyr::summarise(
+            sum((abs(xbar - ybar) + diff_xbar) * (abs(xbar - ybar) + diff_ybar))
+        )
+    return(spod[[1]])
 }
 
 #' Unsystematic sum of product-difference
@@ -69,18 +66,17 @@ spod <- function(x, y, na.rm = F) {
 #' @return numeric value
 #'
 #' @examples
-spdu <- function(x, y, na.rm = F) {
-    
-    assertthat::assert_that(length(x) == length(y))
+spdu <- function(data, x, y, na.rm = F) {
     if (na.rm) {
-        xy <- vec_narm(x, y)
-        x <- xy$x
-        y <- xy$y
+        data <- data %>% tidyr::drop_na()
     }
-    gmfr_xy <- gmfr(x, y, na.rm)
-    sum(
-        abs(x - gmfr_xy$x) * abs(y - gmfr_xy$y)
+    gmfr_xy <- data %>% gmfr(x, y, na.rm)
+    gmfr_xy$data$orig_x <- dplyr::pull(data, x)
+    gmfr_xy$data$orig_y <- dplyr::pull(data, y)
+    spdu <- gmfr_xy$data %>% dplyr::summarise(
+        sum(abs(orig_x - x) * abs(orig_y - y))
     )
+    return(spdu[[1]])
 }
 
 
@@ -93,16 +89,11 @@ spdu <- function(x, y, na.rm = F) {
 #' @return numeric value
 #'
 #' @examples
-mpdu <- function(x, y, na.rm = F) {
-    
-    assertthat::assert_that(length(x) == length(y))
+mpdu <- function(data, x, y, na.rm = F) {
     if (na.rm) {
-        xy <- vec_narm(x, y)
-        x <- xy$x
-        y <- xy$y
+        data <- data %>% tidyr::drop_na()
     }
-    n <- length(x)
-    spdu(x, y, na.rm = na.rm) / n
+    data %>% spdu(x, y, na.rm = na.rm) / nrow(data)
 }
 
 #' pud
@@ -115,8 +106,8 @@ mpdu <- function(x, y, na.rm = F) {
 #' @export
 #'
 #' @examples
-pud <- function(x, y, na.rm = F) {
-    mpdu(x, y, na.rm = na.rm) / msd(x, y, na.rm = na.rm)
+pud <- function(data, x, y, na.rm = F) {
+    data %>% mpdu(x, y, na.rm = na.rm) / data %>% msd(x, y, na.rm = na.rm)
 }
 
 #' spds
@@ -128,10 +119,8 @@ pud <- function(x, y, na.rm = F) {
 #' @return numeric value
 #'
 #' @examples
-spds <- function(x, y, na.rm = F) {
-    
-    assertthat::assert_that(length(x) == length(y))
-    ssd(x, y, na.rm = na.rm) - spdu(x, y, na.rm = na.rm)
+spds <- function(data, x, y, na.rm = F) {
+    data %>% ssd(x, y, na.rm = na.rm) - data %>% spdu(x, y, na.rm = na.rm)
 }
 
 #' mpds
@@ -143,16 +132,12 @@ spds <- function(x, y, na.rm = F) {
 #' @return numeric value
 #'
 #' @examples
-mpds <- function(x, y, na.rm = F) {
-    
-    assertthat::assert_that(length(x) == length(y))
+mpds <- function(data, x, y, na.rm = F) {
     if (na.rm) {
-        xy <- vec_narm(x, y)
-        x <- xy$x
-        y <- xy$y
+        data <- data %>% tidyr::drop_na()
     }
-    n <- length(x)
-    spds(x, y, na.rm = na.rm) / n
+    n <- nrow(data)
+    data %>% spds(x, y, na.rm = na.rm) / n
 }
 
 #' psd
@@ -166,9 +151,8 @@ mpds <- function(x, y, na.rm = F) {
 #' @export
 #'
 #' @examples
-psd <- function(x, y, na.rm = F) {
-    
-    mpds(x, y, na.rm = na.rm) / msd(x, y, na.rm = na.rm)
+psd <- function(data, x, y, na.rm = F) {
+    data %>% mpds(x, y, na.rm = na.rm) / data %>% msd(x, y, na.rm = na.rm)
 }
 
 #' ac
@@ -184,8 +168,8 @@ psd <- function(x, y, na.rm = F) {
 #' @export
 #'
 #' @examples
-ac <- function(x, y, na.rm = F) {
-    1 - (ssd(x, y, na.rm = na.rm) / spod(x, y, na.rm = na.rm))
+ac <- function(data, x, y, na.rm = F) {
+    1 - (data %>% ssd(x, y, na.rm = na.rm) / data %>% spod(x, y, na.rm = na.rm))
 }
 
 
@@ -202,9 +186,9 @@ ac <- function(x, y, na.rm = F) {
 #' @export
 #'
 #' @examples
-acs <- function(x, y, na.rm = F) {
+acs <- function(data, x, y, na.rm = F) {
     
-    1 - (spds(x, y, na.rm = na.rm) / spod(x, y, na.rm = na.rm))
+    1 - (data %>% spds(x, y, na.rm = na.rm) / data %>% spod(x, y, na.rm = na.rm))
 }
 
 #' acu
@@ -220,7 +204,7 @@ acs <- function(x, y, na.rm = F) {
 #' @export
 #'
 #' @examples
-acu <- function(x, y, na.rm = F) {
+acu <- function(data, x, y, na.rm = F) {
     
-    1 - (spdu(x, y, na.rm = na.rm) / spod(x, y, na.rm = na.rm))
+    1 - (data %>% spdu(x, y, na.rm = na.rm) / data %>% spod(x, y, na.rm = na.rm))
 }
