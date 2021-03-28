@@ -2,8 +2,9 @@
 #' 
 #' sum of square difference
 #' 
-#' @param x a vector of numeric values
-#' @param y a vector of numeric values
+#' @param data data.frame 
+#' @param x column name for independent data in model
+#' @param y column name for response data in model
 #' @param na.rm boolean flag indicating whether or not to remove NA values from
 #'   computation
 #'   
@@ -11,10 +12,11 @@
 #'
 #' @examples
 ssd <- function(data, x, y, na.rm = F) {
+    diff_sq <- NULL
     if (na.rm) {
         data <- data %>% tidyr::drop_na()
     }
-    ssd <- data %>% dplyr::mutate(diff_sq = (x - y) ^ 2) %>%
+    ssd <- data %>% dplyr::mutate(diff_sq = ({{ x }} - {{ y }}) ^ 2) %>%
         dplyr::summarise(sum(diff_sq))
     return(ssd[[1]])
 }
@@ -33,7 +35,7 @@ msd <- function(data, x, y, na.rm = F) {
         data <- data %>% tidyr::drop_na()
     }
     n <- nrow(data)
-    data %>% ssd(x, y, na.rm = na.rm) / n
+    data %>% ssd({{ x }}, {{ y }}, na.rm = na.rm) / n
 }
 
 #' spod
@@ -46,13 +48,15 @@ msd <- function(data, x, y, na.rm = F) {
 #'
 #' @examples
 spod <- function(data, x, y, na.rm = F) {
-    
+    ybar <- xbar <- diff_ybar <- diff_xbar <- NULL
     if (na.rm) {
         data <- data %>% tidyr::drop_na()
     }
     spod <- data %>% 
-        dplyr::mutate(xbar = mean(x), ybar = mean(y)) %>%
-        dplyr::mutate(diff_xbar = abs(x - xbar), diff_ybar = abs(y - ybar)) %>%
+        dplyr::mutate(xbar = mean({{ x }}), ybar = mean({{ y }})) %>%
+        dplyr::mutate(
+            diff_xbar = abs({{ x }} - xbar), 
+            diff_ybar = abs({{ y }} - ybar)) %>%
         dplyr::summarise(
             sum((abs(xbar - ybar) + diff_xbar) * (abs(xbar - ybar) + diff_ybar))
         )
@@ -67,12 +71,13 @@ spod <- function(data, x, y, na.rm = F) {
 #'
 #' @examples
 spdu <- function(data, x, y, na.rm = F) {
+    orig_x <- orig_y <- NULL
     if (na.rm) {
         data <- data %>% tidyr::drop_na()
     }
-    gmfr_xy <- data %>% gmfr(x, y, na.rm)
-    gmfr_xy$data$orig_x <- dplyr::pull(data, x)
-    gmfr_xy$data$orig_y <- dplyr::pull(data, y)
+    gmfr_xy <- data %>% gmfr({{ x }}, {{ y }}, na.rm)
+    gmfr_xy$data$orig_x <- dplyr::pull(data, {{ x }})
+    gmfr_xy$data$orig_y <- dplyr::pull(data, {{ y }})
     spdu <- gmfr_xy$data %>% dplyr::summarise(
         sum(abs(orig_x - x) * abs(orig_y - y))
     )
@@ -93,7 +98,7 @@ mpdu <- function(data, x, y, na.rm = F) {
     if (na.rm) {
         data <- data %>% tidyr::drop_na()
     }
-    data %>% spdu(x, y, na.rm = na.rm) / nrow(data)
+    data %>% spdu({{ x }}, {{ y }}, na.rm = na.rm) / nrow(data)
 }
 
 #' pud
@@ -107,7 +112,8 @@ mpdu <- function(data, x, y, na.rm = F) {
 #'
 #' @examples
 pud <- function(data, x, y, na.rm = F) {
-    data %>% mpdu(x, y, na.rm = na.rm) / data %>% msd(x, y, na.rm = na.rm)
+    data %>% mpdu({{ x }}, {{ y }}, na.rm = na.rm) / 
+        data %>% msd({{ x }}, {{ y }}, na.rm = na.rm)
 }
 
 #' spds
@@ -120,7 +126,8 @@ pud <- function(data, x, y, na.rm = F) {
 #'
 #' @examples
 spds <- function(data, x, y, na.rm = F) {
-    data %>% ssd(x, y, na.rm = na.rm) - data %>% spdu(x, y, na.rm = na.rm)
+    data %>% ssd({{ x }}, {{ y }}, na.rm = na.rm) - 
+        data %>% spdu({{ x }}, {{ y }}, na.rm = na.rm)
 }
 
 #' mpds
@@ -137,7 +144,7 @@ mpds <- function(data, x, y, na.rm = F) {
         data <- data %>% tidyr::drop_na()
     }
     n <- nrow(data)
-    data %>% spds(x, y, na.rm = na.rm) / n
+    data %>% spds({{ x }}, {{ y }}, na.rm = na.rm) / n
 }
 
 #' psd
@@ -152,7 +159,8 @@ mpds <- function(data, x, y, na.rm = F) {
 #'
 #' @examples
 psd <- function(data, x, y, na.rm = F) {
-    data %>% mpds(x, y, na.rm = na.rm) / data %>% msd(x, y, na.rm = na.rm)
+    data %>% mpds({{ x }}, {{ y }}, na.rm = na.rm) / 
+        data %>% msd({{ x }}, {{ y }}, na.rm = na.rm)
 }
 
 #' ac
@@ -169,7 +177,8 @@ psd <- function(data, x, y, na.rm = F) {
 #'
 #' @examples
 ac <- function(data, x, y, na.rm = F) {
-    1 - (data %>% ssd(x, y, na.rm = na.rm) / data %>% spod(x, y, na.rm = na.rm))
+    1 - (data %>% ssd({{ x }}, {{ y }}, na.rm = na.rm) / 
+             data %>% spod({{ x }}, {{ y }}, na.rm = na.rm))
 }
 
 
@@ -188,7 +197,8 @@ ac <- function(data, x, y, na.rm = F) {
 #' @examples
 acs <- function(data, x, y, na.rm = F) {
     
-    1 - (data %>% spds(x, y, na.rm = na.rm) / data %>% spod(x, y, na.rm = na.rm))
+    1 - (data %>% spds({{ x }}, {{ y }}, na.rm = na.rm) / 
+             data %>% spod({{ x }}, {{ y }}, na.rm = na.rm))
 }
 
 #' acu
@@ -205,6 +215,6 @@ acs <- function(data, x, y, na.rm = F) {
 #'
 #' @examples
 acu <- function(data, x, y, na.rm = F) {
-    
-    1 - (data %>% spdu(x, y, na.rm = na.rm) / data %>% spod(x, y, na.rm = na.rm))
+    1 - (data %>% spdu({{ x }}, {{ y }}, na.rm = na.rm) / 
+             data %>% spod({{ x }}, {{ y }}, na.rm = na.rm))
 }

@@ -37,13 +37,29 @@ Here are some of the basic tools made available by agreeable…
 library(agreeable)
 library(ggplot2)
 library(knitr)
+library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
+library(data.table)
+#> 
+#> Attaching package: 'data.table'
+#> The following objects are masked from 'package:dplyr':
+#> 
+#>     between, first, last
 
 set.seed(123)
-observed <- sort(rnorm(500, mean = 300, sd = 75))
-predicted_systematic <- sort(rnorm(500, mean = 275, sd = 100))
-
+data <- data.table(
+    observed = sort(rnorm(500, mean = 300, sd = 75)),
+    predicted_systematic = sort(rnorm(500, mean = 275, sd = 100))
+)
 sds <- c(1, 5, 10, 30, 50, 75, 100, 150)
-predicted_unsystematic <- sort(rnorm(500, mean = 300, sd = sds))
+data$predicted_unsystematic <- sort(rnorm(500, mean = 300, sd = sds))
 ```
 
 ### 1. AC
@@ -57,36 +73,36 @@ Systematic differences dominate:
 ``` r
 knitr::kable(
     data.table::data.table(
-        AC = ac(observed, predicted_systematic),
-        ACs = acs(observed, predicted_systematic),
-        ACu = acu(observed, predicted_systematic),
-        PUD = pud(observed, predicted_systematic),
-        PSD = psd(observed, predicted_systematic)
+        AC = data %>% ac(observed, predicted_systematic),
+        ACs = data %>% acs(observed, predicted_systematic),
+        ACu = data %>% acu(observed, predicted_systematic),
+        PUD = data %>% pud(observed, predicted_systematic),
+        PSD = data %>% psd(observed, predicted_systematic)
     )
 )
 ```
 
 |        AC |       ACs |       ACu |       PUD |       PSD |
 |----------:|----------:|----------:|----------:|----------:|
-| 0.8659736 | 0.8691102 | 0.9968634 | 0.0234028 | 0.9765972 |
+| 0.8659736 | 0.9352026 | 0.9307709 | 0.5165329 | 0.4834671 |
 
 Unsystematic (random) differences dominate:
 
 ``` r
 knitr::kable(
     data.table::data.table(
-        AC = ac(observed, predicted_unsystematic),
-        ACs = acs(observed, predicted_unsystematic),
-        ACu = acu(observed, predicted_unsystematic),
-        PUD = pud(observed, predicted_unsystematic),
-        PSD = psd(observed, predicted_unsystematic)
+        AC = data %>% ac(observed, predicted_unsystematic),
+        ACs = data %>% acs(observed, predicted_unsystematic),
+        ACu = data %>% acu(observed, predicted_unsystematic),
+        PUD = data %>% pud(observed, predicted_unsystematic),
+        PSD = data %>% psd(observed, predicted_unsystematic)
     )
 )
 ```
 
-|        AC |       ACs |      ACu |       PUD |       PSD |
-|----------:|----------:|---------:|----------:|----------:|
-| 0.8553422 | 0.9967902 | 0.858552 | 0.9778108 | 0.0221892 |
+|        AC |       ACs |       ACu |       PUD |       PSD |
+|----------:|----------:|----------:|----------:|----------:|
+| 0.8553422 | 0.9992637 | 0.8560785 | 0.9949103 | 0.0050897 |
 
 ### 2. GMFR
 
@@ -96,20 +112,16 @@ lines:
 Systematic differences dominate:
 
 ``` r
-# Intercept
-a <- a_gmfr(observed, predicted_systematic)
+inter <- data %>% gmfr_intercept(observed, predicted_systematic)
+slope <- data %>% gmfr_slope(observed, predicted_systematic)
 
-# Slope
-b <- b_gmfr(observed, predicted_systematic)
-
-ggplot2::ggplot(data = NULL) + 
+ggplot2::ggplot(data, aes(x=observed, y = predicted_systematic)) +
     ggplot2::geom_point(
-        aes(x = observed, y = predicted_systematic), 
         alpha = 0.7, 
         color = "black"
     ) + 
     ggplot2::geom_abline(aes(slope = 1, intercept = 0, color = "black")) + 
-    ggplot2::geom_abline(aes(slope = b, intercept = a, color = "orange")) + 
+    ggplot2::geom_abline(aes(slope = slope, intercept = inter, color = "orange")) + 
     ggplot2::scale_color_identity(
         labels=c("1:1", "GMFR"), 
         guide="legend", 
@@ -122,19 +134,16 @@ ggplot2::ggplot(data = NULL) +
 Unsystematic (random) differences dominate:
 
 ``` r
-a <- a_gmfr(observed, predicted_unsystematic)
+inter <- data %>% gmfr_intercept(observed, predicted_unsystematic)
+slope <- data %>% gmfr_slope(observed, predicted_unsystematic)
 
-# Slope
-b <- b_gmfr(observed, predicted_unsystematic)
-
-ggplot2::ggplot(data = NULL) + 
+ggplot2::ggplot(data, aes(x = observed, y = predicted_unsystematic)) + 
     ggplot2::geom_point(
-        aes(x = observed, y = predicted_unsystematic), 
         alpha = 0.7, 
         color = "black"
     ) + 
     ggplot2::geom_abline(aes(slope = 1, intercept = 0, color = "black")) + 
-    ggplot2::geom_abline(aes(slope = b, intercept = a, color = "orange")) + 
+    ggplot2::geom_abline(aes(slope = slope, intercept = inter, color = "orange")) + 
     ggplot2::scale_color_identity(
         labels=c("1:1", "GMFR"), 
         guide="legend", 
