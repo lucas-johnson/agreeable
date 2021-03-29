@@ -21,7 +21,7 @@ gmfr_slope <- function(data, x, y, na.rm = F) {
         dplyr::mutate(
             diff_xbar = abs({{ x }} - xbar), 
             diff_ybar = abs({{ y }} - ybar)) %>% 
-        dplyr::summarise(sum(diff_ybar ^ 2) / sum(diff_xbar ^ 2))
+        dplyr::summarise(sqrt(sum(diff_ybar ^ 2) / sum(diff_xbar ^ 2)))
         
     return(b[[1]])
 }
