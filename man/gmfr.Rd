@@ -17,7 +17,8 @@ gmfr(data, x, y, na.rm = F)
 computation}
 }
 \value{
-a list of vectors (x, and y)
+a agreeable_gmfr object containing slope, intercept and a data.frame
+of x and y values on the gmfr line
 }
 \description{
 Computes x and y coordinates along the GMFR line for input vectors x and y

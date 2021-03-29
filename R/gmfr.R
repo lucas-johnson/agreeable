@@ -53,7 +53,8 @@ gmfr_intercept <- function(data, x, y, na.rm = F) {
 #' 
 #' @inheritParams gmfr_slope
 #'
-#' @return a list of vectors (x, and y) 
+#' @return a agreeable_gmfr object containing slope, intercept and a data.frame
+#'   of x and y values on the gmfr line
 #' @export
 #'
 #' @examples
