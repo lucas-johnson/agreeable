@@ -4,12 +4,14 @@
 \alias{acu}
 \title{acu}
 \usage{
-acu(x, y, na.rm = F)
+acu(data, x, y, na.rm = F)
 }
 \arguments{
-\item{x}{a vector of numeric values}
+\item{data}{data.frame}
 
-\item{y}{a vector of numeric values}
+\item{x}{column name for independent data in model}
+
+\item{y}{column name for response data in model}
 
 \item{na.rm}{boolean flag indicating whether or not to remove NA values from
 computation}
