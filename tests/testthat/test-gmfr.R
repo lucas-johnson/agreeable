@@ -1,53 +1,43 @@
 # ==============================================================================
-# a_gmfr
+# gmfr_intercept
 # ==============================================================================
 
-test_that("a_gmfr works", {
-      x <- c(1, 2, 3)
-      y <- c(4, 5, 6)
-      expect_equal(a_gmfr(x, y), 3)
+test_that("gmfr_intercept works", {
+    test_data <- data.frame(
+        a = c(1, 2, 3),
+        b = c(4, 5, 6)
+    )
+    expect_equal(gmfr_intercept(test_data, a, b), 3)
 })
 
-test_that("a_gmfr fails on vectors of different length", {
-    x <- c(1, 2)
-    y <- c(3, 4, 5)
-    expect_error(a_gmfr(x, y))
-    x <- c(1, 2, 3)
-    y <- c(4, 5)
-    expect_error(a_gmfr(x, y))
-})
-
-test_that("na.rm works with a_gmfr", {
-    x <- c(1, 2, NA)
-    y <- c(3, 4, 5)
-    expect_equal(a_gmfr(x, y, na.rm = T), 2)
-    expect_true(is.na(a_gmfr(x, y)))
+test_that("na.rm works with gmfr_intercept", {
+    test_data <- data.frame(
+        a = c(1, 2, NA),
+        b = c(3, 4, 5)
+    )
+    expect_equal(gmfr_intercept(test_data, a, b, na.rm = T), 2)
+    expect_true(is.na(gmfr_intercept(test_data, a, b)))
 })
 
 # ==============================================================================
-# b_gmfr
+# gmfr_slope
 # ==============================================================================
 
-test_that("b_gmfr works", {
-    x <- c(1, 2, 3)
-    y <- c(4, 5, 6)
-    expect_equal(b_gmfr(x, y), 1)
+test_that("gmfr_slope works", {
+    test_data <- data.frame(
+        a = c(1, 2, 3),
+        b = c(4, 5, 6)
+    )
+    expect_equal(gmfr_slope(test_data, a, b), 1)
 })
 
-test_that("b_gmfr fails on vectors of different length", {
-    x <- c(1, 2)
-    y <- c(3, 4, 5)
-    expect_error(b_gmfr(x, y))
-    x <- c(1, 2, 3)
-    y <- c(4, 5)
-    expect_error(a_gmfr(x, y))
-})
-
-test_that("na.rm works with b_gmfr", {
-    x <- c(1, 2, NA)
-    y <- c(3, 4, 5)
-    expect_equal(b_gmfr(x, y, na.rm = T), 1)
-    expect_true(is.na(b_gmfr(x, y)))
+test_that("na.rm works with gmfr_slope", {
+    test_data <- data.frame(
+        a = c(1, 2, NA),
+        b = c(3, 4, 5)
+    )
+    expect_equal(gmfr_slope(test_data, a, b, na.rm = T), 1)
+    expect_true(is.na(gmfr_slope(test_data, a, b)))
 })
 
 # ==============================================================================
@@ -55,44 +45,50 @@ test_that("na.rm works with b_gmfr", {
 # ==============================================================================
 
 test_that("gmfr works", {
-    x <- c(1, 2, 3)
-    y <- c(4, 5, 6)
-    expect_equal(gmfr(x, y), list(x = x, y = y))
+    test_data <- data.frame(
+      x = c(1, 2, 3),
+      y = c(4, 5, 6)
+    )
+    gmfr_test <- test_data %>% gmfr(x, y)
+    expect_equal(gmfr_test$data, test_data)
     
-    x <- c(34, 2, 87, 46)
-    y <- c(29, 2, 88, 56)
-    expect_equal(
-        gmfr(x, y), 
-        list(
-            x = c(
-                28.175241,
-                2.411275, 
-                84.474277, 
-                53.939207
-            ), 
-            y = c(
-                35.104204,
-                1.568994,
-                90.646895,
-                47.679907
-            )
+    test_data <- data.frame(
+        a = c(34, 2, 87, 46),
+        b = c(29, 2, 88, 56)
+    )
+    test_out <- data.frame(
+        x = c(
+            28.175241,
+            2.411275, 
+            84.474277, 
+            53.939207
+        ), 
+        y = c(
+            35.104204,
+            1.568994,
+            90.646895,
+            47.679907
         )
+    )
+    gmfr_test <- test_data %>% gmfr(a, b)
+    expect_equal(
+        gmfr_test$data, 
+        test_out
     )
 })
 
-test_that("gmfr fails on vectors of different length", {
-    x <- c(1, 2)
-    y <- c(3, 4, 5)
-    expect_error(gmfr(x, y))
-    x <- c(1, 2, 3)
-    y <- c(4, 5)
-    expect_error(gmfr(x, y))
- 
-})
 
 test_that("na.rm works with gmfr", {
-  x <- c(1, 2, NA)
-  y <- c(3, 4, 5)
-  expect_true(is.na(b_gmfr(x, y)))
-  expect_equal(gmfr(x, y, na.rm = T), list(x = x[1:2], y = y[1:2]))
+    test_data <- data.frame(
+        a = c(1, 2, NA),
+        b = c(3, 4, 5)
+    )
+    expect_true(
+        all(is.na(gmfr(test_data, a, b)$data$a)) & 
+            all(is.na(gmfr(test_data, a, b)$data$b))
+    )
+    expect_equal(
+        gmfr(test_data, a, b, na.rm = T)$data, 
+        data.frame(x = c(1, 2), y= c(3, 4))
+    )
 })

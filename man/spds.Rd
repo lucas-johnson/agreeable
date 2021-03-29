@@ -4,12 +4,14 @@
 \alias{spds}
 \title{spds}
 \usage{
-spds(x, y, na.rm = F)
+spds(data, x, y, na.rm = F)
 }
 \arguments{
-\item{x}{a vector of numeric values}
+\item{data}{data.frame}
 
-\item{y}{a vector of numeric values}
+\item{x}{column name for independent data in model}
+
+\item{y}{column name for response data in model}
 
 \item{na.rm}{boolean flag indicating whether or not to remove NA values from
 computation}
