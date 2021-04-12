@@ -3,8 +3,8 @@
 #' sum of square difference
 #' 
 #' @param data data.frame 
-#' @param x column name for independent data in model
-#' @param y column name for response data in model
+#' @param x column name (numeric)
+#' @param y column name (numeric)
 #' @param na.rm boolean flag indicating whether or not to remove NA values from
 #'   computation
 #'   
@@ -158,6 +158,9 @@ mpds <- function(data, x, y, na.rm = F) {
 #' @export
 #'
 #' @examples
+#' example_data <- data.frame(a = c(1, 2, 3), b = c(1.1, 2.1, 3.1))
+#' psd(example_data, a, b)
+#' 
 psd <- function(data, x, y, na.rm = F) {
     data %>% mpds({{ x }}, {{ y }}, na.rm = na.rm) / 
         data %>% msd({{ x }}, {{ y }}, na.rm = na.rm)
