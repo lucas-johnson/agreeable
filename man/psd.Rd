@@ -9,9 +9,9 @@ psd(data, x, y, na.rm = F)
 \arguments{
 \item{data}{data.frame}
 
-\item{x}{column name for independent data in model}
+\item{x}{column name (numeric)}
 
-\item{y}{column name for response data in model}
+\item{y}{column name (numeric)}
 
 \item{na.rm}{boolean flag indicating whether or not to remove NA values from
 computation}
@@ -21,4 +21,9 @@ numeric value bounded [0, 1]
 }
 \description{
 Percentage of systematic difference
+}
+\examples{
+example_data <- data.frame(a = c(1, 2, 3), b = c(1.1, 2.1, 3.1))
+psd(example_data, a, b)
+
 }

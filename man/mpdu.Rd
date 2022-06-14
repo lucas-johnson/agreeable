@@ -9,9 +9,9 @@ mpdu(data, x, y, na.rm = F)
 \arguments{
 \item{data}{data.frame}
 
-\item{x}{column name for independent data in model}
+\item{x}{column name (numeric)}
 
-\item{y}{column name for response data in model}
+\item{y}{column name (numeric)}
 
 \item{na.rm}{boolean flag indicating whether or not to remove NA values from
 computation}
